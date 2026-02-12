@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import "remixicon/fonts/remixicon.css";
 function App() {
   const [content, setContent] = useState(false);
+  const titlref = useRef(null);
+
   useGSAP(() => {
     const tl = gsap.timeline();
 
@@ -55,6 +57,22 @@ function App() {
       delay: -1,
       ease: "Expo.easeInOut",
     });
+    gsap.to(".girl", {
+      x: "-50%",
+      rotate: 0,
+      scale: 0.77,
+      bottom: "-60%",
+      duration: 2,
+      delay: -0.5,
+      ease: "Expo.easeInOut",
+    });
+    gsap.to("i", {
+      y: 6,
+      yoyo: true,
+      duration: 0.8,
+      repeat: -1,
+      ease: "power1.inOut",
+    });
 
     const main = document.querySelector(".main");
 
@@ -62,7 +80,7 @@ function App() {
       const moveX = (e.clientX / window.innerWidth - 0.5) * 40;
 
       gsap.to(".imgDiv .gtaText", {
-        x: `${moveX * 0.4}%`,
+        x: `${moveX * 1.7}%`,
       });
       gsap.to(".imgDiv .sky", {
         x: moveX,
@@ -75,6 +93,7 @@ function App() {
   }, [content]);
   return (
     <>
+      <audio src="./title.mp3" ref={titlref} preload="auto"></audio>
       <div
         className="svg flex items-center justify-center fixed top-0 left-0 z-10 w-full h-screen overflow-hidden bg-black
       "
@@ -97,7 +116,7 @@ function App() {
 
       {content && (
         <div className="main w-full rotate-[-10deg] scale-[1.7]">
-          <div className="landing h-screen w-full ">
+          <div className="landing h-screen w-full relative ">
             <div className="navbar absolute top-0  w-full  z-20  px-6 py-6 ">
               <div className="logo flex gap-5">
                 <div className="lines flex flex-col gap-[4px]">
@@ -111,6 +130,9 @@ function App() {
                 >
                   Rockstar
                 </h1>
+                <button onClick={() => titlref.current?.play()}>
+                  <i className="ri-music-fill text-2xl text-white font-bold leading-none bg-black rounded-full p-0.5 cursor-pointer"></i>
+                </button>
               </div>
             </div>
             <div className="  imgDiv relative h-full w-full overflow-hidden ">
@@ -126,20 +148,24 @@ function App() {
               />
 
               <img
-                className="girl absolute   -bottom-[60%] left-1/2 scale-[0.65] -translate-x-1/2 z-10 "
+                className="girl absolute   -bottom-[150%] left-1/2 scale-[0.10] -translate-x-1/2 z-10 
+                  "
                 src="./girlbg.png"
                 alt=""
               />
 
-              <div className="gtaText flex flex-col absolute top-0  left-1/2     -translate-x-1/2 text-zinc-50  text-[7rem] leading-none gap-3 ">
+              <div
+                className="gtaText flex flex-col absolute top-0  left-1/2     -translate-x-1/2 text-zinc-50  text-[7rem] leading-none gap-3
+                select-none "
+              >
                 <h1 className="-ml-20">grand</h1>
                 <h1 className="ml-15">theft</h1>
                 <h1 className="-ml-20">auto</h1>
               </div>
             </div>
 
-            <div className="bottmbar w-full px-10 py-10 absolute  left-0 bottom-0  bg-gradient-to-t from-black to-transparent z-20">
-              <div className="flex items-center  text-amber-50 font-sans  gap-2">
+            <div className="bottmbar w-full px-10 py-10 absolute  left-0 bottom-0   bg-gradient-to-t from-black to-transparent z-20">
+              <div className=" scrollbar flex items-center  text-amber-50 font-sans  gap-2">
                 <i className="ri-arrow-down-line text-2xl"></i>
                 <div className="scroll font-semibold text-xl ">Scroll down</div>
               </div>
